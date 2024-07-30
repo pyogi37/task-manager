@@ -1,25 +1,13 @@
-import {
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  InputGroup,
-  InputRightElement,
-  VStack,
-  useToast,
-} from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [show, setShow] = useState(false);
-  const toast = useToast();
-  const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleClick = () => setShow(!show);
 
@@ -27,13 +15,7 @@ const Login = () => {
     setLoading(true);
 
     if (!email || !password) {
-      toast({
-        title: "Please fill all the fields",
-        status: "warning",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
+      alert("Please fill all the fields");
       setLoading(false);
       return;
     }
@@ -46,8 +28,8 @@ const Login = () => {
       };
 
       const userData = {
-        email: email,
-        password: password,
+        email,
+        password,
       };
 
       const response = await axios.post(
@@ -58,67 +40,64 @@ const Login = () => {
 
       localStorage.setItem("userInfo", JSON.stringify(response.data));
 
-      toast({
-        title: "Login Successful",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
+      alert("Login Successful");
 
       setLoading(false);
       navigate("/home");
     } catch (error) {
-      console.log(error.message);
-      toast({
-        title: "Error Occurred",
-        description: error.response.data.message,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
+      console.error(error.message);
+      alert(`Error Occurred: ${error.response.data.message}`);
       setLoading(false);
     }
   };
 
   return (
-    <VStack spacing="10px">
-      <FormControl id="email" isRequired>
-        <FormLabel>Email Address</FormLabel>
-        <Input
-          value={email}
+    <div className="flex flex-col items-center space-y-4 p-4">
+      <div className="w-full max-w-sm">
+        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+          Email Address
+        </label>
+        <input
+          id="email"
           type="email"
+          value={email}
           placeholder="Enter your email address"
           onChange={(e) => setEmail(e.target.value)}
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm"
         />
-      </FormControl>
-      <FormControl id="password" isRequired>
-        <FormLabel>Password</FormLabel>
-        <InputGroup size="md">
-          <Input
+      </div>
+
+      <div className="w-full max-w-sm">
+        <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+          Password
+        </label>
+        <div className="relative">
+          <input
+            id="password"
+            type={show ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password"
-            type={show ? "text" : "password"}
+            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm"
           />
-          <InputRightElement width="4.5rem">
-            <Button h="1.75rem" size="sm" onClick={handleClick}>
-              {show ? "Hide" : "Show"}
-            </Button>
-          </InputRightElement>
-        </InputGroup>
-      </FormControl>
-      <Button
-        colorScheme="blue"
-        width="100%"
-        style={{ marginTop: 15 }}
-        isLoading={loading}
+          <button
+            type="button"
+            onClick={handleClick}
+            className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500"
+          >
+            {show ? "Hide" : "Show"}
+          </button>
+        </div>
+      </div>
+
+      <button
         onClick={submitHandler}
+        disabled={loading}
+        className={`w-full px-4 py-2 text-white bg-blue-500 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
-        Login
-      </Button>
-    </VStack>
+        {loading ? "Logging in..." : "Login"}
+      </button>
+    </div>
   );
 };
 

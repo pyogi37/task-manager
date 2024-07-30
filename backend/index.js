@@ -1,13 +1,16 @@
 const express = require("express");
+const session = require("express-session");
 const app = express();
 const dotenv = require("dotenv");
 dotenv.config({ path: __dirname + "/.env" });
-
+const MongoStore = require("connect-mongo");
 const connectDB = require("./config/db");
 const port = process.env.PORT;
 const colors = require("colors");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const path = require("path");
+const passport = require("passport");
+const passportSetup = require("./passport.config");
 
 connectDB();
 
@@ -16,6 +19,22 @@ app.use(
     extended: true,
   })
 );
+
+// Session setup
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI, 
+    }),
+    cookie: { secure: false }, 
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(express.json());
 

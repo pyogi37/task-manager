@@ -1,16 +1,4 @@
 import React, { useState } from "react";
-import {
-  ListItem,
-  Text,
-  Flex,
-  Button,
-  Box,
-  Select,
-  Input,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-} from "@chakra-ui/react";
 import EditModal from "./EditModal";
 
 const SingleTask = ({ task, onDelete, onEdit, onMarkDone, onMarkUndone }) => {
@@ -26,7 +14,7 @@ const SingleTask = ({ task, onDelete, onEdit, onMarkDone, onMarkUndone }) => {
     setIsEditModalOpen(false);
   };
 
-  var options = {
+  const options = {
     year: "numeric",
     month: "short",
     day: "numeric",
@@ -35,53 +23,51 @@ const SingleTask = ({ task, onDelete, onEdit, onMarkDone, onMarkUndone }) => {
   const bgColor = task.done ? "#f3e6ff" : "aliceblue";
 
   return (
-    <ListItem m={2} w={"100%"} bgColor={bgColor} borderRadius={"lg"}>
-      <Flex direction={"column"} p={2}>
-        <Flex justify={"space-between"}>
-          <Text m={2} fontWeight={"semibold"} w={"50vw"} color={"black"}>
-            {task.content}
-          </Text>
-          <Text m={2} color={"darkgoldenrod"} fontWeight={"semibold"}>
+    <li className={`m-2 w-full ${bgColor} rounded-lg`}>
+      <div className="flex flex-col p-2">
+        <div className="flex justify-between">
+          <p className="m-2 font-semibold w-1/2 text-black">{task.content}</p>
+          <p className="m-2 text-yellow-800 font-semibold">
             {new Date(task.dueDate).toLocaleDateString("en-US", options)}
-          </Text>
-          <Text m={2} color={"darkgoldenrod"} fontWeight={"semibold"}>
-            {task.priority}
-          </Text>
-        </Flex>
-        <Box w={"100%"} display={"flex"} justifyContent={"flex-end"}>
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            ml={2}
+          </p>
+          <p className="m-2 text-yellow-800 font-semibold">{task.priority}</p>
+        </div>
+        <div className="w-full flex justify-end">
+          <button
+            className="ml-2 px-4 py-2 border border-gray-300 rounded-md bg-transparent hover:bg-gray-100"
             onClick={handleEditClick}
           >
             Edit
-          </Button>
+          </button>
           {task.done ? (
-            <Button
-              ml={2}
+            <button
+              className="ml-2 px-4 py-2 border border-gray-300 rounded-md bg-transparent hover:bg-gray-100"
               onClick={onMarkUndone}
-              size={"sm"}
-              variant={"outline"}
             >
               Mark Undone
-            </Button>
+            </button>
           ) : (
-            <Button ml={2} onClick={onMarkDone} size={"sm"} variant={"outline"}>
+            <button
+              className="ml-2 px-4 py-2 border border-gray-300 rounded-md bg-transparent hover:bg-gray-100"
+              onClick={onMarkDone}
+            >
               Mark Done
-            </Button>
+            </button>
           )}
-          <Button ml={2} onClick={onDelete} size={"sm"} variant={"outline"}>
+          <button
+            className="ml-2 px-4 py-2 border border-gray-300 rounded-md bg-transparent hover:bg-gray-100"
+            onClick={onDelete}
+          >
             Delete
-          </Button>
-        </Box>
-      </Flex>
+          </button>
+        </div>
+      </div>
       <EditModal
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         onSave={(editedTask) => handleSaveEdit(editedTask)}
       />
-    </ListItem>
+    </li>
   );
 };
 

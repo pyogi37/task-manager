@@ -1,18 +1,6 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Input,
-  Button,
-  FormControl,
-  FormLabel,
-  Center,
-  FormErrorMessage,
-  Flex,
-  Select,
-  Text,
-} from "@chakra-ui/react";
-import { useToast } from "@chakra-ui/react";
 import Axios from "axios";
+import { useToast } from "@chakra-ui/react"; // For consistency, using Chakra's useToast
 import { UserState } from "../Context/UserProvider";
 
 const TaskForm = ({ addTask }) => {
@@ -20,11 +8,11 @@ const TaskForm = ({ addTask }) => {
   const [taskCategory, setTaskCategory] = useState("personal");
   const [taskPriority, setTaskPriority] = useState("medium");
   const [dueDate, setDueDate] = useState("");
-  const [isLoading, setIsLoading] = useState(false); // Add loading state
+  const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
-  const { user } = UserState();
+  const { user } = UserState(); // Ensure this hook is correctly imported
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async () => {
     if (!dueDate || !taskText) {
       toast({
         title: "Enter all fields!",
@@ -46,7 +34,6 @@ const TaskForm = ({ addTask }) => {
       return;
     }
 
-    // Set loading state to true while the request is being made
     setIsLoading(true);
 
     try {
@@ -66,10 +53,7 @@ const TaskForm = ({ addTask }) => {
         }
       );
 
-      console.log("NEW TASK", response.data);
-
       if (response.status === 201) {
-        // Notify the parent component (Homepage) by calling the addTask callback
         addTask({
           content: taskText,
           category: taskCategory,
@@ -90,8 +74,6 @@ const TaskForm = ({ addTask }) => {
         setDueDate("");
       }
     } catch (error) {
-      console.error("Error adding task:", error);
-
       toast({
         title: "Error",
         description: "An error occurred while adding the task.",
@@ -100,89 +82,83 @@ const TaskForm = ({ addTask }) => {
         isClosable: true,
       });
     } finally {
-      // Set loading state to false after the request is complete
       setIsLoading(false);
     }
   };
 
   return (
-    <Center>
-      <Flex
-        direction={"column"}
-        w={"100%"}
-        m={4}
-        p={2}
-        bgColor={"white"}
-        borderRadius={"lg"}
-        alignItems={"center"}
-      >
-        <Box
-          display={"flex"}
-          m={2}
-          p={2}
-          bgColor={"aliceblue"}
-          borderRadius={"lg"}
-        >
-          <FormControl id="taskText" m={1} isRequired>
-            <FormLabel>Task</FormLabel>
-            <Input
+    <div className="flex justify-center p-4">
+      <div className="w-full max-w-lg bg-white p-4 rounded-lg shadow-md">
+        <div className="bg-blue-100 p-4 rounded-lg mb-4">
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="taskText">
+              Task
+            </label>
+            <input
+              id="taskText"
               type="text"
               placeholder="Add a new task"
               value={taskText}
               onChange={(e) => setTaskText(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
-            <FormErrorMessage>This field is required</FormErrorMessage>
-          </FormControl>
+          </div>
 
-          <FormControl id="taskCategory" m={1} isRequired>
-            <FormLabel>Category</FormLabel>
-            <Select
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="taskCategory">
+              Category
+            </label>
+            <select
+              id="taskCategory"
               value={taskCategory}
               onChange={(e) => setTaskCategory(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               <option value="personal">Personal</option>
               <option value="work">Work</option>
               <option value="other">Other</option>
-            </Select>
-            <FormErrorMessage>This field is required</FormErrorMessage>
-          </FormControl>
+            </select>
+          </div>
 
-          <FormControl id="taskPriority" m={1} isRequired>
-            <FormLabel>Priority</FormLabel>
-            <Select
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="taskPriority">
+              Priority
+            </label>
+            <select
+              id="taskPriority"
               value={taskPriority}
               onChange={(e) => setTaskPriority(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               <option value="low">Low</option>
               <option value="medium">Medium</option>
               <option value="high">High</option>
-            </Select>
-            <FormErrorMessage>This field is required</FormErrorMessage>
-          </FormControl>
+            </select>
+          </div>
 
-          <FormControl id="dueDate" m={1} isRequired>
-            <FormLabel>Due Date</FormLabel>
-            <Input
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="dueDate">
+              Due Date
+            </label>
+            <input
+              id="dueDate"
               type="date"
               value={dueDate}
-              color={"gray"}
               onChange={(e) => setDueDate(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
-            <FormErrorMessage>This field is required</FormErrorMessage>
-          </FormControl>
-        </Box>
+          </div>
+        </div>
 
-        <Button
+        <button
           onClick={handleSubmit}
-          colorScheme="purple"
-          w={"30%"}
-          isLoading={isLoading} // Use isLoading to control the button state
-          loadingText="Adding..."
+          disabled={isLoading}
+          className={`w-full py-2 px-4 bg-purple-500 text-white font-semibold rounded-lg shadow-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
         >
-          Add Task
-        </Button>
-      </Flex>
-    </Center>
+          {isLoading ? "Adding..." : "Add Task"}
+        </button>
+      </div>
+    </div>
   );
 };
 

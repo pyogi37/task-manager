@@ -7,8 +7,9 @@ const taskSchema = new mongoose.Schema(
       required: true,
     },
     category: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
+      type: String,
+      required: true,
+      enum: ["personal", "work", "other"], // Define allowed categories
     },
     dueDate: {
       type: Date,
@@ -19,7 +20,7 @@ const taskSchema = new mongoose.Schema(
     priority: {
       type: String,
       enum: ["low", "medium", "high"],
-      default: "medium",
+      default: "medium", // Set a default priority
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,

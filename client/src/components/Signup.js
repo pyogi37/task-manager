@@ -1,20 +1,8 @@
-import {
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  InputGroup,
-  InputRightElement,
-  VStack,
-  useToast,
-} from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
 
 const Signup = () => {
   const [show, setShow] = useState(false);
-  const toast = useToast();
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -27,25 +15,13 @@ const Signup = () => {
     setLoading(true);
 
     if (!name || !email || !password || !confirmPassword) {
-      toast({
-        title: "Please fill all the fields!",
-        status: "warning",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
+      alert("Please fill all the fields!");
       setLoading(false);
       return;
     }
 
     if (password !== confirmPassword) {
-      toast({
-        title: "Passwords do not match!",
-        status: "warning",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
+      alert("Passwords do not match!");
       setLoading(false);
       return;
     }
@@ -58,9 +34,9 @@ const Signup = () => {
       };
 
       const userData = {
-        name: name,
-        email: email,
-        password: password,
+        name,
+        email,
+        password,
       };
 
       const response = await axios.post(
@@ -71,90 +47,99 @@ const Signup = () => {
 
       console.log(response);
 
-      toast({
-        title: "Registration Successful",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
+      alert("Registration Successful");
 
       setLoading(false);
     } catch (error) {
-      toast({
-        title: "Error occurred",
-        description: error.response.data.message,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
-
+      alert(`Error occurred: ${error.response.data.message}`);
       setLoading(false);
     }
   };
 
   return (
-    <VStack spacing="5px">
-      <FormControl id="first-name" isRequired>
-        <FormLabel>Name</FormLabel>
-        <Input
+    <div className="flex flex-col items-center space-y-4 p-4 w-5xl">
+      <div className="w-full max-w-sm">
+        <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+          Name
+        </label>
+        <input
+          id="name"
+          type="text"
           placeholder="Enter Your Name"
+          value={name}
           onChange={(e) => setName(e.target.value)}
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm"
         />
-      </FormControl>
+      </div>
 
-      <FormControl id="signUpEmail" isRequired>
-        <FormLabel>Email Address</FormLabel>
-        <Input
+      <div className="w-full max-w-sm">
+        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+          Email Address
+        </label>
+        <input
+          id="email"
           type="email"
           placeholder="Enter Your Email Address"
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm"
         />
-      </FormControl>
+      </div>
 
-      <FormControl id="signUpPassword" isRequired>
-        <FormLabel>Password</FormLabel>
-        <InputGroup size="md">
-          <Input
+      <div className="w-full max-w-sm">
+        <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+          Password
+        </label>
+        <div className="relative">
+          <input
+            id="password"
             type={show ? "text" : "password"}
             placeholder="Enter Password"
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
+            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm"
           />
-          <InputRightElement width="4.5em">
-            <Button h="1.75em" size="sm" onClick={handleClick}>
-              {show ? "Hide" : "Show"}
-            </Button>
-          </InputRightElement>
-        </InputGroup>
-      </FormControl>
+          <button
+            type="button"
+            onClick={handleClick}
+            className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500"
+          >
+            {show ? "Hide" : "Show"}
+          </button>
+        </div>
+      </div>
 
-      <FormControl id="confirm-password" isRequired>
-        <FormLabel>Confirm Password</FormLabel>
-        <InputGroup size="md">
-          <Input
+      <div className="w-full max-w-sm">
+        <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700">
+          Confirm Password
+        </label>
+        <div className="relative">
+          <input
+            id="confirm-password"
             type={show ? "text" : "password"}
             placeholder="Confirm password"
+            value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
+            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm"
           />
-          <InputRightElement width="4.5rem">
-            <Button h="1.75rem" size="sm" onClick={handleClick}>
-              {show ? "Hide" : "Show"}
-            </Button>
-          </InputRightElement>
-        </InputGroup>
-      </FormControl>
+          <button
+            type="button"
+            onClick={handleClick}
+            className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500"
+          >
+            {show ? "Hide" : "Show"}
+          </button>
+        </div>
+      </div>
 
-      <Button
-        colorScheme="blue"
-        width={"100%"}
-        style={{ marginTop: 15 }}
+      <button
         onClick={submitHandler}
-        isLoading={loading}
+        disabled={loading}
+        className={`w-full px-4 py-2 text-white bg-blue-500 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
-        Signup
-      </Button>
-    </VStack>
+        {loading ? "Signing up..." : "Signup"}
+      </button>
+    </div>
   );
 };
 

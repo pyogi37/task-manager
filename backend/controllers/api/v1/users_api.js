@@ -5,36 +5,43 @@ const jwt = require("jsonwebtoken");
 module.exports.createSession = async function (req, res) {
   try {
     let user = await User.findOne({ email: req.body.email });
-    if (!user || user.password != req.body.password) {
-      return res.json(422, {
+    if (!user) {
+      return res.status(422).json({
+        message: "Invalid username or password",
+      });
+    }
+
+    const isMatch = await user.comparePassword(req.body.password);
+    if (!isMatch) {
+      return res.status(422).json({
         message: "Invalid username or password",
       });
     }
 
     return res.status(200).json({
-      message: "Sign in successfull, here is your token",
+      message: "Sign in successful, here is your token",
       data: {
         name: user.name,
         email: user.email,
-        token: jwt.sign(user.toJSON(), "todolist", { expiresIn: "2000000" }),
+        token: jwt.sign(user.toJSON(), process.env.JWT_SECRET, {
+          expiresIn: "2000000",
+        }),
       },
     });
   } catch (error) {
     console.log("Error in finding user", error);
-    return res.json(500, {
+    return res.status(500).json({
       message: "Internal Server Error",
     });
   }
 };
 
 module.exports.create = async function (req, res) {
-  console.log("Inside sign up function");
-
   try {
     let user = await User.findOne({ email: req.body.email });
     if (user) {
       return res.json(422, {
-        message: "USer already exists",
+        message: "User already exists",
       });
     }
     if (!user) {

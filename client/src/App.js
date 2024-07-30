@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
+import "./index.css";
 import AuthPage from "./pages/AuthPage";
 import Homepage from "./pages/Homepage";
 import { UserState } from "./Context/UserProvider";
