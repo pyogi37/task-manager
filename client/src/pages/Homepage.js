@@ -267,16 +267,18 @@ const Homepage = () => {
                 className="bg-gray-800 text-white border border-purple-400 rounded py-2 px-4 ml-4"
               />
               {showDropdown && (
-                <div className="absolute bg-white border border-gray-400 rounded mt-1 w- z-10">
-                  {filteredTasks.map((task) => (
-                    <div
-                      key={task._id}
-                      className="py-2 px-4 hover:bg-gray-200 cursor-pointer"
-                      onClick={() => handleTaskClick(task)}
-                    >
-                      {task.title}
-                    </div>
-                  ))}
+                <div className="absolute bg-white border border-gray-400 rounded mt-1 w-1/5 z-10">
+                  {filteredTasks
+                    .filter((task) => task.title !== "dummy0007") // Inline filtering
+                    .map((task) => (
+                      <div
+                        key={task._id}
+                        className="py-2 px-4 hover:bg-gray-200 cursor-pointer"
+                        onClick={() => handleTaskClick(task)}
+                      >
+                        {task.title}
+                      </div>
+                    ))}
                 </div>
               )}
             </div>
