@@ -16,10 +16,5 @@ router.put("/update/:taskId", protect, tasksApi.updateTask);
 // Update a task by ID
 router.patch("/move/", protect, tasksApi.moveTask);
 
-// // Mark a task as done
-// router.patch("/update/:taskId/done", protect, tasksApi.markTaskAsDone);
-
-// // Mark a task as undone
-// router.patch("/update/:taskId/undone", protect, tasksApi.markTaskAsUndone);
 
 module.exports = router;
