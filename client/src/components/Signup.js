@@ -61,7 +61,8 @@ const Signup = () => {
   const handleGoogleLogin = async () => {
     try {
       window.open(
-        `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/google", "_self`
+        `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/google`,
+        "_self"
       );
     } catch (error) {
       console.error(error);

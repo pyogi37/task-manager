@@ -55,7 +55,10 @@ const Login = () => {
 
   const handleGoogleLogin = async () => {
     try {
-      window.open(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/google", "_self`);
+      window.open(
+        `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/google`,
+        "_self"
+      );
     } catch (error) {
       console.error(error);
       toast.error(`Error Occurred: ${error.message}`);
