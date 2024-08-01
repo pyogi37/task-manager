@@ -8,7 +8,7 @@ const AuthPage = () => {
   return (
     <div className=" mx-auto p-4 w-2/5">
       <div className="flex p-3 bg-white my-10 rounded-lg border border-gray-200 justify-center items-center">
-        <h1 className="text-4xl font-sans text-black">Task Manager</h1>
+        <h1 className="text-4xl text-purple-500 ">Task Manager</h1>
       </div>
 
       <div className="bg-white w-full p-6 rounded-lg border border-gray-200">
