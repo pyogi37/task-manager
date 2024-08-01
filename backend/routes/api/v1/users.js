@@ -33,7 +33,7 @@ router.get(
     // Send the token to the client or redirect to the frontend
     console.log(req.user);
     const userString = encodeURIComponent(JSON.stringify({data:req.user}));
-    res.redirect(`http://localhost:3000/handle-token/?user=${userString}`);
+    res.redirect(`${process.env.URL}/handle-token/?user=${userString}`);
   }
 );
 
