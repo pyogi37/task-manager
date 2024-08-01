@@ -1,4 +1,4 @@
-﻿# TODO LIST APP
+﻿# TASK MANAGER APP
 
 A simple web application for managing your day-to-day tasks, sending reminders. This project is built with Node.js, Express, React, and MongoDB.
 
