@@ -207,6 +207,9 @@ module.exports.deleteBoard = async (req, res) => {
     // Delete the board
     await Board.findByIdAndDelete(boardId);
 
+    //Delete all task of board
+    await Task.deleteMany({ board: boardId });
+
     return res.status(200).json({
       message: "Board deleted successfully",
       data: {
