@@ -6,7 +6,7 @@ const AuthPage = () => {
   const [tab, setTab] = useState("login");
 
   return (
-    <div className=" mx-auto p-4 w-3/5">
+    <div className=" mx-auto p-4 w-2/5">
       <div className="flex p-3 bg-white my-10 rounded-lg border border-gray-200 justify-center items-center">
         <h1 className="text-4xl font-sans text-black">Task Manager</h1>
       </div>

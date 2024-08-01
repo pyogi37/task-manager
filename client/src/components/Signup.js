@@ -1,5 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
+import { toast } from "react-toastify";
+import google from "../assets/google.svg";
 
 const Signup = () => {
   const [show, setShow] = useState(false);
@@ -15,13 +17,13 @@ const Signup = () => {
     setLoading(true);
 
     if (!name || !email || !password || !confirmPassword) {
-      alert("Please fill all the fields!");
+      toast.error("Please fill all the fields!");
       setLoading(false);
       return;
     }
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match!");
+      toast.error("Passwords do not match!");
       setLoading(false);
       return;
     }
@@ -47,19 +49,31 @@ const Signup = () => {
 
       console.log(response);
 
-      alert("Registration Successful");
+      toast.success("Registration Successful");
 
       setLoading(false);
     } catch (error) {
-      alert(`Error occurred: ${error.response.data.message}`);
+      toast.error(`Error occurred: ${error.response.data.message}`);
       setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      window.open("http://localhost:8000/api/v1/users/google", "_self");
+    } catch (error) {
+      console.error(error);
+      toast.error(`Error Occurred: ${error.message}`);
     }
   };
 
   return (
     <div className="flex flex-col items-center space-y-4 p-4 w-5xl">
       <div className="w-full max-w-sm">
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+        <label
+          htmlFor="name"
+          className="block text-sm font-medium text-gray-700"
+        >
           Name
         </label>
         <input
@@ -73,7 +87,10 @@ const Signup = () => {
       </div>
 
       <div className="w-full max-w-sm">
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-gray-700"
+        >
           Email Address
         </label>
         <input
@@ -87,7 +104,10 @@ const Signup = () => {
       </div>
 
       <div className="w-full max-w-sm">
-        <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+        <label
+          htmlFor="password"
+          className="block text-sm font-medium text-gray-700"
+        >
           Password
         </label>
         <div className="relative">
@@ -110,7 +130,10 @@ const Signup = () => {
       </div>
 
       <div className="w-full max-w-sm">
-        <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700">
+        <label
+          htmlFor="confirm-password"
+          className="block text-sm font-medium text-gray-700"
+        >
           Confirm Password
         </label>
         <div className="relative">
@@ -135,10 +158,18 @@ const Signup = () => {
       <button
         onClick={submitHandler}
         disabled={loading}
-        className={`w-full px-4 py-2 text-white bg-blue-500 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+        className={`w-3/5 px-4 py-2 text-white bg-blue-500 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+          loading ? "opacity-50 cursor-not-allowed" : ""
+        }`}
       >
         {loading ? "Signing up..." : "Signup"}
       </button>
+
+      <div className="w-full max-w-sm flex justify-center">
+        <div className="cursor-pointer" onClick={handleGoogleLogin}>
+          <img src={google} alt="Google" className="w-8 h-8 mt-2" />
+        </div>
+      </div>
     </div>
   );
 };
