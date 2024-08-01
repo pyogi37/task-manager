@@ -4,7 +4,7 @@ A simple web application for managing your day-to-day tasks, sending reminders. 
 
 ## Deployment Link
 
-https://todo-list-qp93.onrender.com/
+[https://todo-list-qp93.onrender.com/](https://task-manager-x73d.onrender.com/)
 
 ## Video of the functioning application
 
