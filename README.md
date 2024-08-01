@@ -10,6 +10,12 @@ https://todo-list-qp93.onrender.com/
 
 https://drive.google.com/file/d/1yyEw-Uudlvn9e9up-z-TxCiTGPPMhdQp/view
 
+## Additional Features
+
+1. **Google OAUTH Login and Signup**: Users can log in or sign up using their Google accounts.
+2. **Push Emails for Task Reminders**: Users receive email notifications for upcoming tasks.
+3. **User Profile with Cool Avatars**: Users can customize their profiles with unique avatars.
+4. **Multiple Boards**: Organize tasks into various boards to simplify task management.
 
 
 ## Table of Contents
